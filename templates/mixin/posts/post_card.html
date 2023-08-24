@@ -1,0 +1,93 @@
+{% load static %}
+<div class="card">
+    <div class="card__header">
+        <img src="http://via.placeholder.com/32x32" alt="프로필이미지">
+        <a href="#">
+            <!-- context로 넘어온 post_list에서 post별로 -->
+            <span class="card_user-name">{{ post.writer }}</span>
+        </a>
+        <!-- request를 날린 user와 post의 user가 같을 때만 -->
+        {% if request.user == post.writer %}
+            <!-- post가 들어와있기 때문에 해당 post.id를 인자로 넘겨준다 -->
+            <a href="{% url 'posts:post-update' post.id %}">
+                수정하기
+            </a>
+            <a href="{% url 'posts:post-delete' post.id %}">
+                삭제하기
+            </a>
+        {% endif %}
+    </div>
+    <div class="card__body">
+        <div>
+            {#<img class="card__image" src="http://via.placeholder.com/600x600">#}
+            <img class="card__image" src="{{ post.image.url }}">
+        </div>
+        <div class="card__btn-group">
+            <div>
+                <img class="card__btn" src="{% static 'icons/favorite_outlined_black_36dp.svg' %}" alt="좋아요" />
+                <img class="card__btn" src="{% static 'icons/mode_comment_outlined_black_36dp.svg'%}" alt="댓글" />
+                <img class="card__btn" src="{% static 'icons/send_outlined_black_36dp.svg' %}" alt="공유하기" />
+            </div>
+            <div>
+                <img class="card__btn" src="{% static 'icons/bookmark_outlined_black_36dp.svg' %}" alt="북마크" />
+            </div>
+        </div>
+        <div class="card_content">
+            <span class="card_like-num">좋아요 00개</span>
+            <div class="card_main-text">
+                <p>
+                    <span class="card_user-name">{{ post.writer }}</span>
+                    {% if not detail %}
+                    {{post.content | truncatechars:35}}
+                    {% else %}
+                    {{post.content}}
+                    {% endif %}
+                </p>
+                <!-- 더보기를 클릭했을 때 상세로 넘어가는 것 -->
+                <!-- <a href="/posts/{{post.id}}"> -->
+                <!-- 그치만 따로 id값 넣어줘야 함 -->
+                {% if not detail %}
+                <a href="{% url 'posts:post-detail' post.id %}">
+                    더보기
+                </a>
+                {% endif %}
+            </div>
+            <div>
+                <p>
+                    <!-- post는 comment를 알지 못한다 따라서 역참조 -->
+                    댓글 {{post.comment_set.all.count}} 
+                    {% if not detail %}
+                        <a href="{% url 'posts:post-detail' post.id %}">모두보기</a>
+                    {% endif %}
+                </p>
+                <ul class="card__comment-group">
+                    {% if not detail %}
+                        {% for comment in post.comment_set.all|slice:":2" %}
+                        <li>
+                            <p>
+                                <span class="card__user-name">
+                                    {{ comment.writer }}
+                                </span>
+                                {{ comment.content }}
+                            </p>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for comment in post.comment_set.all %}
+                        <li>
+                            <p>
+                                <span class="card__user-name">
+                                    {{ comment.writer }}
+                                </span>
+                                {{ comment.content }}
+                            </p>
+                        </li>
+                        {% endfor %}
+                    {% endif %}
+
+                </ul>
+                <p class="card__created_at">{{post.created_at|date:"Y년 m월 d일"}}</p>
+            </div>
+        </div>
+    </div>
+</div>

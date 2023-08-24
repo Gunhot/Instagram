@@ -1,0 +1,63 @@
+<!-- static 폴더에 있는 파일들을 사용하겠다 -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>{% block title %} {% endblock %}</title>
+</head>
+
+<body class="container">
+    <!-- 이 사이에 자식 html이 들어가게 된다// 이름은 content -->
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+    <!-- 메뉴 -->
+    <div>
+        <nav>
+            <ul class='bottom-menu-group'>
+                <li>
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'icons/home_outlined_black_36dp.svg' %}" alt="홈">
+                    </a>
+                    <!-- src가 안될 때 홈이라는 텍스트가 나온다 -->
+                </li>
+                <li>
+                    <img src="{% static 'icons/search_outlined_black_36dp.svg' %}" alt="검색">
+                </li>
+                <li>
+                    <!-- 링크 걸어주기 -->
+                    <!-- 하드코딩 : <a href="/posts/new/"> -->
+                    <!-- posts안에 있는 post-create -->
+                    <a href = "{% url 'posts:post-create' %}">
+                        <img src="{% static 'icons/add_box_outlined_black_36dp.svg' %}" alt="글쓰기">
+                    </a>
+                </li>
+                <li>
+                    <img src="{% static 'icons/favorite_outlined_black_36dp.svg' %}" alt="관심">
+                </li>
+                <li>
+                    <img src="{% static 'icons/account_circle_outlined_black_36dp.svg' %}" alt="계정">
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- 함수호출한거임 참고 : ()안씀 -->
+    {%if request.user.is_authenticated %}
+    <!-- <span>
+        로그인 상태 : {{request.user.username}}
+    </span> -->
+        <a href="{% url 'accounts:logout' %}">로그아웃</a>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">로그인</a>
+        <a href="{% url 'accounts:signup' %}">회원가입</a>
+    <!-- <span> 비로그인 상태 </span> -->
+    {% endif %}
+
+</body>
+
+</html>

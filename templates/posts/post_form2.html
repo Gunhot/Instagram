@@ -1,0 +1,26 @@
+<!-- base.html이라는 파일을 상속받을 것이다. -->
+{% extends 'base.html' %}
+<!-- title이라는 block안에는 아래 코드가 들어갈 것이다. -->
+{% block title %}
+Form
+{% endblock %}
+<!-- content라는 block안에는 아래 코드가 들어갈 것이다. -->
+{% block content %}
+<h1>post_form using Forms.</h1>
+<!-- action = 이거 왜있노 -->
+<!-- enctype = 이미지를 읽기 위해서 -->
+<!-- post-create를 지워야한다!! update로 날려야하니깐 -->
+<!-- 비워두면 현재 URL이 들어가서 POST를 한다.  -->
+<form action="" method="POST" enctype="multipart/form-data">
+    <!-- 이거 안넣으면 위조 취급받음 -->
+    <!-- 서버에서 응답한거니깐 믿고 작성해라 -->
+    {% csrf_token %}
+    <div>
+    <!-- 이것이 존나 간지 -->
+        {{ form.as_p }}
+    </div>
+    <div>
+        <input type="submit">
+    </div>
+</form>
+{% endblock %}

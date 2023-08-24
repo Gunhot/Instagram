@@ -1,0 +1,11 @@
+<!-- base.html이라는 파일을 상속받을 것이다. -->
+{% extends 'base.html' %}
+<!-- title이라는 block안에는 아래 코드가 들어갈 것이다. -->
+{% block title %}
+Detail
+{% endblock %}
+<!-- content라는 block안에는 아래 코드가 들어갈 것이다. -->
+{% block content %}
+<h1>post_detail</h1>
+{% include 'mixin/posts/post_card.html' with detail=True %}
+{% endblock %}

@@ -1,0 +1,22 @@
+<!-- base.html이라는 파일을 상속받을 것이다. -->
+{% extends 'base.html' %}
+<!-- 얘는 특별히 다 넣어줘야함 -->
+{% load static %}
+<!-- title이라는 block안에는 아래 코드가 들어갈 것이다. -->
+{% block title %}
+홈
+{% endblock %}
+<!-- content라는 block안에는 아래 코드가 들어갈 것이다. -->
+{% block content %}
+<!-- 화면 -->
+<main>
+    <!-- 카드 리스트 -->
+    <div class = 'card-list'>
+        <!-- index.html에 넘어온 context에는 post-list가 있다. -->
+        {% for post in post_list %}
+        <!-- 카드는 여기저기서 많이 쓰이니깐 -->
+            {% include 'mixin/posts/post_card.html' with detail=False %}
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}
